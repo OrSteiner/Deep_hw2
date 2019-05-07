@@ -114,6 +114,11 @@ class ConvClassifier(nn.Module):
                 in_h //= 2
                 in_w //= 2
                 count = 0
+        if count != 0:
+            layers.append(nn.MaxPool2d(2))
+            in_h //= 2
+            in_w //= 2
+            count = 0
         self.in_h = in_h
         self.in_w = in_w
         # ========================
@@ -145,10 +150,22 @@ class ConvClassifier(nn.Module):
         # return class scores.
         # ====== YOUR CODE: ======
         # print(x.size())
-        out = self.feature_extractor(x)
-        # print(out.size())
-        # print(out.flatten().size())
-        out = self.classifier(out.flatten())
+        out1 = self.feature_extractor(x)
+        # print(x.size(), out1.size())
+
+        out1 = self.classifier(out1.flatten(start_dim=1, end_dim=-1))
+        out = out1
+        '''
+        for i in range(out1.size()[0]):
+            # print(out.size())
+            # print(out.flatten().size())
+            out1 = self.classifier(out1.flatten())
+            if i == 0:
+                out = out1
+            else:
+                out = torch.cat((out, out1), 0)
+        '''
+
         # ========================
         return out
 
