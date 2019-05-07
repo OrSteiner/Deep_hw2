@@ -72,12 +72,23 @@ class Trainer(abc.ABC):
             # - Optional: Implement early stopping. This is a very useful and
             #   simple regularization technique that is highly recommended.
             # ====== YOUR CODE: ======
-            res_train = self.train_epoch(dl_train)
-            res_test = self.test_epoch(dl_test)
-            train_loss.append(res_train[0])
+            res_train = self.train_epoch(dl_train, **kw)
+            res_test = self.test_epoch(dl_test, **kw)
+            n, loss_train = 0, 0
+            for loss in res_train[0]:
+                loss_train += loss
+                n += 1
+            loss_train /= n
+            n, loss_test = 0, 0
+            for loss in res_test[0]:
+                loss_test += loss
+                n += 1
+            loss_test /= n
+            train_loss.append(float(loss_train))
             train_acc.append(res_train[1])
-            test_loss.append(res_test[0])
+            test_loss.append(float(loss_test))
             test_acc.append(res_test[1])
+
             if epoch > 0 and test_acc[-1] > test_acc[-2]:
                 epochs_without_improvement = 0
             elif epoch > 0:
@@ -88,7 +99,9 @@ class Trainer(abc.ABC):
             if checkpoints:
                 if epoch < 1 or test_acc[-1] > test_acc[-2]:
                     torch.save(self.model, "model_save")
+            # print(type(train_acc[0]))
 
+            # print(type(train_loss[0]))
             # ========================
 
         return FitResult(actual_num_epochs,

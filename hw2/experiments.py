@@ -15,7 +15,9 @@ from cs236605.train_results import FitResult
 from . import models
 from . import training
 
-DATA_DIR = os.path.join(os.getenv('HOME'), '.pytorch-datasets')
+#!!!! Return It to normal!!!
+# DATA_DIR = os.path.join(os.getenv('HOME'), '.pytorch-datasets')
+DATA_DIR = os.path.join(os.getenv('HOMEPATH'), '.pytorch-datasets')
 
 
 def run_experiment(run_name, out_dir='./results', seed=None,
@@ -56,7 +58,30 @@ def run_experiment(run_name, out_dir='./results', seed=None,
     #  for you automatically.
     fit_res = None
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    # Creating the conv layer filters list:
+    filters = []
+    for filter in filters_per_layer:
+        filters = filters + ([filter] * layers_per_block)
+
+    in_size = ds_train[0][0].size()
+    # print(in_size)
+    num_classes = 10
+    dl_train = torch.utils.data.DataLoader(ds_train, bs_train, shuffle=False)
+    dl_test = torch.utils.data.DataLoader(ds_test, bs_test, shuffle=False)
+
+    model = models.YourCodeNet(in_size, num_classes, filters=filters, pool_every=pool_every, hidden_dims=hidden_dims)
+    # print(model)
+    # (self, in_size, out_classes, filters, pool_every, hidden_dims), free to choose, to change
+    loss_fn = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9)
+    # reg=reg)
+    # free to choose
+
+    trainer = training.TorchTrainer(model, loss_fn, optimizer, device)
+
+    fit_res = trainer.fit(dl_train=dl_train, dl_test=dl_test, num_epochs=epochs, checkpoints=checkpoints,
+                          early_stopping=early_stopping, max_batches=batches)
+
     # ========================
 
     save_experiment(run_name, out_dir, cfg, fit_res)
