@@ -319,9 +319,12 @@ class Dropout(Block):
         # current mode (train/test).
         # ====== YOUR CODE: ======
         # print("key word: ", kw)
-        self.mask = torch.ones_like(x) * self.p
-        self.mask = torch.bernoulli(self.mask)
-        out = self.mask * x
+        out = x
+        self.mask = torch.ones_like(x)
+        if self.training_mode:
+            self.mask *= self.p
+            self.mask = torch.bernoulli(self.mask)
+            out = self.mask * x
         # ========================
 
         return out

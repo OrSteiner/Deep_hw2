@@ -1,0 +1,52 @@
+{
+  "config": {
+    "run_name": "exp1_2_K128_L8",
+    "out_dir": "./results",
+    "seed": 42,
+    "bs_train": 128,
+    "bs_test": 32,
+    "batches": 100,
+    "epochs": 10,
+    "early_stopping": 3,
+    "checkpoints": null,
+    "lr": 0.001,
+    "reg": 0.001,
+    "filters_per_layer": [
+      128
+    ],
+    "layers_per_block": 8,
+    "pool_every": 4,
+    "hidden_dims": [
+      100
+    ],
+    "ycn": false,
+    "kw": {}
+  },
+  "results": {
+    "num_epochs": 0,
+    "train_loss": [
+      2.303316354751587,
+      2.303067207336426,
+      2.3028838634490967,
+      2.302752733230591
+    ],
+    "train_acc": [
+      10.046875,
+      10.15625,
+      10.15625,
+      10.15625
+    ],
+    "test_loss": [
+      2.304043769836426,
+      2.3037424087524414,
+      2.3035147190093994,
+      2.3033385276794434
+    ],
+    "test_acc": [
+      9.84375,
+      9.84375,
+      9.84375,
+      9.84375
+    ]
+  }
+}

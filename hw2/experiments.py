@@ -17,7 +17,7 @@ from . import training
 
 #!!!! Return It to normal!!!
 DATA_DIR = os.path.join(os.getenv('HOME'), '.pytorch-datasets')
-#DATA_DIR = os.path.join(os.getenv('HOMEPATH'), '.pytorch-datasets')
+# DATA_DIR = os.path.join(os.getenv('HOMEPATH'), '.pytorch-datasets')
 
 
 def run_experiment(run_name, out_dir='./results', seed=None,
