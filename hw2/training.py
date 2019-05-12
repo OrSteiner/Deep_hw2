@@ -93,7 +93,7 @@ class Trainer(abc.ABC):
                 epochs_without_improvement = 0
             elif epoch > 0:
                 epochs_without_improvement += 1
-            if epochs_without_improvement == 3 :# early_stopping:
+            if epochs_without_improvement == 3 and early_stopping:# early_stopping:
                 break
 
             if checkpoints:
